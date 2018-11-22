@@ -6,15 +6,34 @@ namespace TicTacToe.Tests
     public class GameShould
     {
         [Fact]
-        public void DetermineWhichPlayersTurnItIs()
+        public void AllowPlayerToPlaceAMoveOnTheBoard()
         {
-            IPlayer player = new StubPlayer();
-            IGame game = new Game();
+            IPlayer player = new Player();
             IGameState gameState = new GameState();
+            IGame game = new Game(gameState);
 
-            var currentPlayer = game.CurrentPlayer();
+            var actualGameState = game.ChangeState(player);
+            var expectedGameState = new[,]
+            {
+                {"x"," "," "},
+                {" "," "," "},
+                {" "," "," "}
+            };
 
-            currentPlayer.Should().Be("");
+            actualGameState.Should().Be(expectedGameState);
+        }
+    }
+
+    public class Game : IGame
+    {
+        public Game(IGameState gameState)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public object ChangeState(IPlayer player)
+        {
+            throw new System.NotImplementedException();
         }
     }
 
@@ -22,25 +41,18 @@ namespace TicTacToe.Tests
     {
     }
 
+
+    public class Player : IPlayer
+    {
+    }
+
     public interface IGameState
     {
     }
 
-    public class Game : IGame
-    {
-        public object CurrentPlayer()
-        {
-            throw new System.NotImplementedException();
-        }
-    }
-
     public interface IGame
     {
-        object CurrentPlayer();
-    }
-
-    public class StubPlayer : IPlayer
-    {
+        object ChangeState(IPlayer player);
     }
 
     public interface IPlayer
